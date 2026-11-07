@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Chibi Gay</title>
+  <style>
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body {
+      background: #000 url("./image.png") center center / cover no-repeat;
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+<body>
+  <audio id="sound" src="./sound.mp4" preload="auto"></audio>
+  <script>
+    const sound = document.getElementById("sound");
+    document.addEventListener("click", () => {
+      sound.pause();
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    });
+  </script>
+</body>
+</html>
