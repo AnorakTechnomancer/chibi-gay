@@ -14,16 +14,41 @@
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
+    #error {
+      display: none; position: fixed; bottom: 12px; left: 12px; right: 12px;
+      background: #1b1b1b; color: white; font: 14px system-ui, sans-serif;
+      padding: 12px; border-radius: 8px; text-align: center;
+    }
   </style>
 </head>
 <body>
   <audio id="sound" src="./sound.mp3" preload="auto"></audio>
+  <div id="error" role="status"></div>
   <script>
     const sound = document.getElementById("sound");
-    document.addEventListener("click", () => {
-      sound.pause();
-      sound.currentTime = 0;
-      sound.play().catch(() => {});
+    const error = document.getElementById("error");
+    function playSound() {
+      error.style.display = "none";
+      try {
+        sound.pause();
+        sound.currentTime = 0;
+        sound.muted = false;
+        sound.volume = 1;
+        const playback = sound.play();
+        if (playback) playback.catch(err => {
+          console.error("Sound playback failed:", err);
+          error.textContent = "Sound couldn't play: " + err.message;
+          error.style.display = "block";
+        });
+      } catch (err) {
+        console.error("Sound playback failed:", err);
+        error.textContent = "Sound couldn't play: " + err.message;
+        error.style.display = "block";
+      }
+    }
+    document.addEventListener("pointerdown", playSound);
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") playSound();
     });
   </script>
 </body>
